@@ -6,8 +6,10 @@ from sarsa import SarsaAgent
 from qlearning import Qagent
 from utils import experiment1_transformation, get_env_parameters
 
-episodes = 20
-steps = 2000
+episodes = 50
+steps = 5000
+
+# episode 6, steps 5000, epsilon decay 0.9999 seems to work for p = 0.9 (smoothly decreasing), epsilon = 0.15
 
 sum_strategy_list = []
 sum_reward_list = []
@@ -39,7 +41,7 @@ for _ in range(episodes):
 		next_action = agent.act(next_state)
 
 		# update Q table
-		agent.update(state, action, reward, next_state, next_action) #SARSA
+		agent.update(state, action, reward, next_state, next_action)
 
 		state = next_state
 		action = next_action
@@ -62,6 +64,6 @@ plt.subplot(211)
 plt.plot(np.array(sum_strategy_list)/steps, label="Proportion of EQW")
 plt.legend()
 plt.subplot(212)
-plt.plot(np.array(sum_reward_list)/steps, label="Accumulated reward") #todo: rename because it is not
+plt.plot(np.array(sum_reward_list)/steps, label="Averaged reward")
 plt.legend()
 plt.show()

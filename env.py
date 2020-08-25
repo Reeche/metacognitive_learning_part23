@@ -43,7 +43,7 @@ class experiment1():
 
         # next state = next p
         #next_p = np.random.uniform(0.9, 1)
-        next_p = 0.6
+        next_p = 0.5
 
         return outcome, execution_time, next_p
 

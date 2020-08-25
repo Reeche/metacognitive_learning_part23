@@ -43,5 +43,5 @@ def get_env_parameters():
 
 	# get p
 	#p = np.random.uniform(0, 1)
-	p = 0.6
+	p = 0.5
 	return x1, y1, x2, y2, p
