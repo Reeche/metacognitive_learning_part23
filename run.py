@@ -1,69 +1,86 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import statistics
 
-from env import experiment1
+from env import environment
 from sarsa import SarsaAgent
 from qlearning import Qagent
-from utils import experiment1_transformation, get_env_parameters
+from utils import experiment_transformation, get_env_parameters
 
-episodes = 50
-steps = 5000
+episodes = 6
+steps = 1000
+experiment = 1
 
-# episode 6, steps 5000, epsilon decay 0.9999 seems to work for p = 0.9 (smoothly decreasing), epsilon = 0.15
-
-sum_strategy_list = []
-sum_reward_list = []
 
 # initialise the SARSA agent
-agent = SarsaAgent(2, 2)
+agent = SarsaAgent(6, 2)
 #agent = Qagent(2, 2)
 
 # init state and env
 x1, y1, x2, y2, p = get_env_parameters()
 
 # initiate env
-env = experiment1(x1, y1, x2, y2, p)
+env = environment(x1, y1, x2, y2, p)
 
-for _ in range(episodes):
-	reward_list = []
-	strategy_list = []
+action_overall_average_list = []
+reward_overall_average_list = []
+for _ in range(5): #average over plots
+	sum_strategy_list = []
+	sum_reward_list = []
+	for _ in range(episodes):
+		reward_list = []
+		strategy_list = []
 
-	state = experiment1_transformation(p)
-	action = agent.act(state)
+		state = experiment_transformation(experiment, p)
+		action = agent.act(state)
 
-	for _ in range(steps):
-		# take action and observe reward, next_state
-		outcome, execution_time, next_p = env.step(action)
-		reward = env.reward(outcome, execution_time)
-		next_state = experiment1_transformation(next_p)
+		for _ in range(steps):
+			# take action and observe reward, next_state
+			outcome, execution_time, next_p = env.step(action)
+			reward = env.reward(outcome, execution_time)
+			next_state = experiment_transformation(experiment, next_p)
 
-		# choose next action based on new state
-		next_action = agent.act(next_state)
+			# choose next action based on new state
+			next_action = agent.act(next_state)
 
-		# update Q table
-		agent.update(state, action, reward, next_state, next_action)
+			# update Q table
+			agent.update(state, action, reward, next_state, next_action)
 
-		state = next_state
-		action = next_action
+			state = next_state
+			action = next_action
 
-		reward_list.insert(len(reward_list), reward)
-		strategy_list.insert(len(strategy_list), action)
+			reward_list.insert(len(reward_list), reward)
+			strategy_list.insert(len(strategy_list), action)
 
-		# init state and env
-		x1, y1, x2, y2, _ = get_env_parameters()
+			# init state and env
+			x1, y1, x2, y2, _ = get_env_parameters()
 
-		# initiate env
-		env = experiment1(x1, y1, x2, y2, next_p)
+			# initiate env
+			env = environment(x1, y1, x2, y2, next_p)
 
 
-	sum_reward_list.insert(len(sum_reward_list), sum(reward_list))
-	sum_strategy_list.insert(len(sum_strategy_list), sum(strategy_list))
+		sum_reward_list.insert(len(sum_reward_list), sum(reward_list))
+		sum_strategy_list.insert(len(sum_strategy_list), sum(strategy_list)) #outputs sum of one episode
+
+	# outputs average over episodes
+	action_overall_average_list.insert(len(action_overall_average_list), np.array(sum_strategy_list)/steps)
+	reward_overall_average_list.insert(len(reward_overall_average_list), np.array(sum_reward_list)/steps)
+
+# calculate the average across runs
+action_values_across_runs = np.sum(np.array(action_overall_average_list), axis=0)
+reward_overall_average_list = np.sum(np.array(reward_overall_average_list), axis=0)
+
+# calculate the difference between runs in order to plot the spreaf
+action_std = np.std(np.array(action_overall_average_list), axis=0)
 
 plt.figure(1)
 plt.subplot(211)
-plt.plot(np.array(sum_strategy_list)/steps, label="Proportion of EQW")
+plt.errorbar(x=range(6), y=action_values_across_runs/5, yerr=action_std, label="Averaged proportion of EQW over 5 runs")
 plt.legend()
 plt.subplot(212)
-plt.plot(np.array(sum_reward_list)/steps, label="Averaged reward")
+plt.plot(np.array(reward_overall_average_list)/5, label="Averaged reward over 5 runs")
 plt.legend()
 plt.show()
+
+
+
