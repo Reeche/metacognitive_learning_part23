@@ -1,9 +1,9 @@
 import numpy as np
 
 
-class TableSarsaAgent():
+class SarsaAgent():
 
-    def __init__(self, num_state=12, num_action=2, gamma=0.99, epsilon=0.15, lr=0.1, epsilon_decay=1):
+    def __init__(self, num_state, num_action, gamma=0.99, epsilon=0.15, lr=0.1, epsilon_decay=1):
         self.num_state = num_state
         self.num_action = num_action
         self.epsilon = epsilon
