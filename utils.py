@@ -4,18 +4,18 @@ def discretizeP(p):
 	return np.round(p, decimals=1)
 
 def experiment_transformation(n, p):
-	p = np.round(p, decimals=1)
 	if n == 1:
-		if p == 0.6 or p == 0.5:
+		if p <= 0.6:
 			return 0
 		else:
 			return 1
 	if n == 2:
-		if p == 0.5 or p == 0.6 or p == 0.9 or p == 1:
+		if p < 0.6 or p > 0.9:
 			return 0
-		else:
+		else: #actually not needed
 			return 1
 	if n == 3:
+		p = np.round(p, decimals=1)
 		if p == 0.5:
 			return 0
 		if p == 0.6:
@@ -48,5 +48,5 @@ def select_p_based_on_experiment(n):
 	if n == 1 or n == 3:
 		return np.random.uniform(0.5, 1)
 	if n == 2:
-		return np.random.uniform(0.5, 0.6)
-		#return np.random.uniform(0.9, 1)
+		return np.random.uniform(0.5, 0.6) #todo: SMALLER than 0.6 (excluding 0.6)
+		#return np.random.uniform(0.9, 1) #todo: LARGER than 0.9

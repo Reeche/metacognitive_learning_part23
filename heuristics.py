@@ -13,7 +13,8 @@ def lex(probability_dict, values_dict):
         values = values_dict[key]
         temp.update({key: values})
     #("Execution time of LEX algoritm", (time.time() - start_time))
-    return max(temp, key=temp.get), (time.time() - start_time) #todo: check faster implementations
+    return max(temp, key=temp.get), (time.time() - start_time)
+    # return max(temp, key=temp.get), 0.1
 
 # all outcomes almost equally likely
 def equalweight(values_dict):
@@ -21,3 +22,4 @@ def equalweight(values_dict):
     # all values equally likely, therefore only choose the highest value
     #print("Execution time of EQW algorithm", (time.time() - start_time))
     return max(values_dict, key=values_dict.get), (time.time() - start_time)
+    # return max(values_dict, key=values_dict.get), 0

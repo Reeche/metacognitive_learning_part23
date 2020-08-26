@@ -2,7 +2,7 @@
 .env
 .venv
 env/
-venv/
+../venv/
 ENV/
 env.bak/
 venv.bak/
@@ -10,7 +10,7 @@ venv.bak/
 
 *.xml
 __pycache__/
-.idea/
+../.idea/
 *.idea/
 
 # Distribution / packaging
@@ -47,3 +47,5 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
+
+plots/
