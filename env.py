@@ -4,7 +4,7 @@ from heuristics import lex, equalweight
 from utils import select_p_based_on_experiment
 
 class environment():
-    def __init__(self, x1, y1, x2, y2, p):
+    def __init__(self, x1, y1, x2, y2, p, experiment):
         # gamble 1
         self.x1 = x1
         self.y1 = y1
@@ -14,6 +14,7 @@ class environment():
         self.y2 = y2
 
         self.p = p
+        self.experiment = experiment
 
     def step(self, strategy):
         """
@@ -43,14 +44,15 @@ class environment():
             #print("EQW reward", reward, outcome, execution_time)
 
         # get p
-        next_p = select_p_based_on_experiment(3)
+        next_p = select_p_based_on_experiment(self.experiment)
+        #print("selected next p from env", next_p)
 
         return outcome, execution_time, next_p
 
     def reward(self, selected_choice, execution_time):
         if selected_choice.endswith("1"): #selected gamble 1
             reward = np.random.choice([float(self.x1), float(self.y1)], 1, p=[self.p, 1 - self.p])
-        else:
+        else: #selected gamble 2
             reward = np.random.choice([float(self.x2), float(self.y2)], 1, p=[self.p, 1 - self.p])
         return reward - execution_time
 

@@ -11,7 +11,7 @@ def experiment_transformation(n, p):
 		else:
 			return 1
 	if n == 2:
-		if p == 0.5 or p == 1:
+		if p == 0.5 or p == 0.6 or p == 0.9 or p == 1:
 			return 0
 		else:
 			return 1
@@ -32,7 +32,7 @@ def experiment_transformation(n, p):
 			raise ValueError("Invalid p for experiment 3 given!", p)
 
 
-def get_env_parameters():
+def get_env_parameters(experiment):
 	x1 = np.random.uniform(-10, 10, size=1)
 	y1 = np.random.uniform(-10, 10, size=1)
 
@@ -41,14 +41,12 @@ def get_env_parameters():
 	y2 = np.random.uniform(-10, 10, size=1)
 
 	# get p
-	p = select_p_based_on_experiment(3)
-
-
+	p = select_p_based_on_experiment(experiment)
 	return x1, y1, x2, y2, p
 
 def select_p_based_on_experiment(n):
 	if n == 1 or n == 3:
 		return np.random.uniform(0.5, 1)
 	if n == 2:
-		return 0.5
-		#return 1
+		return np.random.uniform(0.5, 0.6)
+		#return np.random.uniform(0.9, 1)
