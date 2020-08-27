@@ -7,13 +7,18 @@ from utils import experiment_transformation, get_env_parameters
 
 episodes = 6
 steps = 5000
-experiment = 1
+
+# Experiment number {1, 2, 3, 4}, experiment 4 is for the part III for p = 0.6
+experiment = 2
 
 # initialise the SARSA agent
-if experiment == 1 or experiment == 2:
+if experiment == 1:
 	agent = SarsaAgent(2, 2)
-else:
+elif experiment == 3:
 	agent = SarsaAgent(6, 2)
+elif experiment == 2 or experiment == 4:
+	agent = SarsaAgent(1, 2)
+
 #agent = Qagent(2, 2)
 
 # init state and env
