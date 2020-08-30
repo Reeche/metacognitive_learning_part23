@@ -87,7 +87,7 @@ for _ in range(10):
 avg_overall_reward_list = np.sum(np.array(overall_reward_list), axis=0)/10
 avg_overall_strategy_list = np.sum(np.array(overall_strategy_list), axis=0)/10
 
-# calculate the difference between runs in order to plot the spread
+# calculate the standard deviation between runs
 action_std = np.std(np.array(overall_strategy_list), axis=0)
 
 print("values", avg_overall_strategy_list)
@@ -96,10 +96,12 @@ print("values", avg_overall_strategy_list)
 # plt.figure(1)
 # plt.subplot(211)
 plt.errorbar(x=range(6), y=avg_overall_strategy_list, yerr=action_std, label="Averaged proportion of EQW over 10 runs")
-# plt.legend()
+plt.ylabel("Frequency")
+plt.xlabel("Block number")
+plt.legend()
 # plt.subplot(212)
 # plt.plot(avg_overall_reward_list, label="Averaged reward over 10 runs")
-plt.legend()
+# plt.legend()
 plt.show()
 
 
